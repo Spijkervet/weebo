@@ -56,3 +56,10 @@ docs/_build/
 
 # PyBuilder
 target/
+
+#custom
+*.sh
+*.mov
+*.mp4
+*.mp3
+*.wav

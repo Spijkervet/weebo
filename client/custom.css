@@ -1,0 +1,23 @@
+body {
+  background-color: black !important;
+  color: white !important;
+}
+
+
+.center {
+  width: 100%;
+  margin-left: auto;
+  margin-top: 20%;
+  margin-bottom: auto;
+  margin-right: auto;
+  min-height: 10em;
+  vertical-align: middle;
+  text-align: center;
+}
+
+
+h1 {
+
+  font-size: 6em;
+  font-family: 'Open Sans Condensed', sans-serif;
+}
