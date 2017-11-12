@@ -1,4 +1,4 @@
-from settings import giphy_api_key, global_lang, tmp_gif_file, screen_window_size
+from .settings import giphy_api_key, global_lang, tmp_gif_file, screen_window_size
 import requests
 import urllib.request
 import threading
@@ -12,14 +12,15 @@ class GiphyBot():
 
     def get_giphy(self, query, endpoint, sticker=False, limit=25, rating="G"):
         query_url = self.create_query_url(self.base_url, query, endpoint, sticker, limit, rating)
+        print(query_url)
         response = requests.get(query_url)
         data = response.json()
         num_gifs = len(data['data'])
         if(num_gifs > 0):
             urllib.request.urlretrieve(data['data'][randint(0,num_gifs-1)]['images']['looping']['mp4'], tmp_gif_file)
-            self.gif_thread = threading.Thread(target=self.play_gif)
-            self.gif_thread.daemon = False
-            self.start_thread()
+            #self.gif_thread = threading.Thread(target=self.play_gif)
+            #self.gif_thread.daemon = False
+            #self.start_thread()
 
     def create_query_url(self, url, query, endpoint, sticker, limit, rating):
         if(sticker == False):

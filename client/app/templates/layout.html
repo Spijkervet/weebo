@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>Weebo - {% block title %}{% endblock %}</title>
+    {% endblock %}
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet"></head>
+
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/bootstrap.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/custom.css') }}">
+  </head>
+  <body>
+    <div id="container" class="container h-100">
+        {% block content %}{% endblock %}
+    </div>
+    <!--
+    <div id="footer" class="container-fluid">
+      {% block footer %}
+      &copy; Copyright 2017 <a href="">Janne Spijkervet</a>.
+      {% endblock %}
+    </div>
+-->
+
+
+    <script src="{{ url_for('static', filename='js/bootstrap.js') }}">
+  </body>
+</html>

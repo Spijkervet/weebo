@@ -1,3 +1,4 @@
+'''
 from . import auth_blueprint
 
 from flask.views import MethodView
@@ -78,4 +79,4 @@ auth_blueprint.add_url_rule(
     '/auth/login',
     view_func=login_view,
     methods=['POST']
-)
+)'''

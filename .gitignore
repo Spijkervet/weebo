@@ -63,3 +63,5 @@ target/
 *.mp4
 *.mp3
 *.wav
+
+weebo-client/

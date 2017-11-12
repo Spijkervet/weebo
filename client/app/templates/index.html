@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{% endblock %}
+{% block content %}
+
+
+<div class="center">
+  <h1>Hi!</h1>
+  <br>
+  <h1>I am Weebo</h1>
+</div>
+
+
+<div class="row h-100 justify-content-center align-items-center">
+
+    <form action="" method="post">
+        {{ form.csrf }}
+        <div class="form-group">
+          <label for="query">What would you like to say?</label>
+          <input type="query" class="form-control" id="query" name="query">
+
+          <label class="form-check-label">
+              <input class="form-check-input" type="checkbox" id="whisper" name="whisper"> Whisper
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Ask</button>
+    </form>
+</div>
+{% endblock %}
