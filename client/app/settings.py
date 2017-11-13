@@ -1,4 +1,4 @@
-weebo_server_address = "192.168.1.2"
+weebo_server_address = "sys-neupho-002.neurophonics.nl"
 weebo_server_port = "5000"
 
 wake_words = ["Weebo", "wei", "weber", "we", "Weaver"]

@@ -13,13 +13,15 @@ def create_app(config_name):
 def index():
     if request.method == 'POST':
         query = request.form['query']
+        api = request.form['api']
         if(request.form.get("whisper")):
-            weebo(query, whisper=True)
+            weebo(query, api, whisper=True)
         else:
-            weebo(query)
+            weebo(query, api)
 
     form = QueryForm()
     return render_template('index.html', form=form)
+
 
 
 def clean():

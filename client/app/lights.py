@@ -2,11 +2,15 @@ import RPi.GPIO as GPIO
 from time import sleep
 import threading
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
 """WEEBO LIGHTS"""
-class WeeboLights():
+class WeeboLights(threading.Thread):
 
     def __init__(self):
         print("*** WEEBO *** Lights initiated")
+        threading.Thread.__init__(self)
         self.red_light_gpio = 17
         self.green_light_gpio = 18
         self.blue_light_gpio = 4
@@ -18,7 +22,10 @@ class WeeboLights():
         GPIO.setup(self.green_light_gpio, GPIO.OUT)
         GPIO.setup(self.red_light_gpio, GPIO.OUT)
 
+        self.deamon = True
+        self.start()
 
+    '''
     def light_thread(self, light_type, delay_time, iterations):
         if(light_type == "red"):
             light_func = self.red_light
@@ -28,9 +35,10 @@ class WeeboLights():
             light_func = self.green_light
         else:
             return
-        thread = threading.Thread(target=light_func, args=(delay_time, iterations))
-        thread.daemon = False
-        thread.start()
+        #thread = threading.Thread(target=light_func, args=(delay_time, iterations))
+        #thread.daemon = False
+        #thread.start()
+    '''
 
     def red_light(self, delay_time, iterations):
         for i in range(iterations):
@@ -38,6 +46,12 @@ class WeeboLights():
             sleep(delay_time)
             GPIO.output(self.red_light_gpio, GPIO.LOW)
             sleep(delay_time)
+
+    def red_light(self, turn_on):
+        if(turn_on):
+            GPIO.output(self.red_light_gpio, GPIO.HIGH)
+        else:
+            GPIO.output(self.red_light_gpio, GPIO.LOW)
 
     def green_light(self, turn_on):
         if(turn_on):

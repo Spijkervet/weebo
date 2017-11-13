@@ -12,7 +12,7 @@ class GiphyBot():
 
     def get_giphy(self, query, endpoint, sticker=False, limit=25, rating="G"):
         query_url = self.create_query_url(self.base_url, query, endpoint, sticker, limit, rating)
-        print(query_url)
+        # print(query_url)
         response = requests.get(query_url)
         data = response.json()
         num_gifs = len(data['data'])

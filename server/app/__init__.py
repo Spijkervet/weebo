@@ -1,7 +1,7 @@
 import json
 import os
 
-from flask import Flask, request, abort, send_file, make_response
+from flask import Flask, request, abort, send_file, make_response, jsonify
 
 from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
@@ -23,12 +23,12 @@ def create_app(config_name):
 
 @app.route("/query/", methods=['GET'])
 def query():
+    print("API: " + request.args.get('api'))
     if(request.args.get('data')):
         if(request.args.get('whisper') == "True"):
-            print("TREUEEUEUE")
-            filename = brain.process(request.args.get('data'), api=True, whisper=True)
+            filename = brain.process(request.args.get('data'), api=request.args.get('api'), whisper=True)
         else:
-            filename = brain.process(request.args.get('data'), api=True)
+            filename = brain.process(request.args.get('data'), api=request.args.get('api'))
         return send_file(filename, mimetype='audio/mpeg')
     return "", 401;
 
@@ -75,12 +75,10 @@ def alarms():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
-    print("Request:")
-    # print(json.dumps(req, indent=4))
     res = process_request(req)
-    res = json.dumps(res)
+    res = json.dumps(res, indent=4)
     # print(res)
-    r = make_response(res)
+    r = make_response(jsonify(res))
     r.headers['Content-Type'] = 'application/json'
     return r
 
@@ -117,13 +115,15 @@ def make_spotify_query(req):
     parameters = result.get("parameters")
 
 
+
 def make_yql_query(req):
     result = req.get("result")
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
     if city is None:
         return None
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
+
+    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
 
 
 def make_webhook_result(data):
@@ -153,6 +153,8 @@ def make_webhook_result(data):
     #+ units.get('temperature')
     speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
              ", the temperature is " + condition.get('temp') + " degrees Celsius"
+
+    # print(speech)
 
     return {
         "speech": speech,

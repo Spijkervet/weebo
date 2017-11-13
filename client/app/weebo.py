@@ -12,8 +12,6 @@ from .lights import WeeboLights
 #r = sr.Recognizer()
 #r.energy_threshold=4000
 
-weebo_lights = WeeboLights()
-
 
 '''
 def STT_recognizer(audio_data, lang):
@@ -43,7 +41,7 @@ def wakeword_listener():
         test_wake_word = r.recognize_google(audio) #STT_recognizer(audio, lang=global_lang)
         print(test_wake_word)
         if(any(x in test_wake_word for x in wake_words)):
-            subprocess.Popen(["aplay", "audio/startup.wav"])
+            subprocess.Popen(["aplay", "app/audio/startup.wav"])
             listener()
             return
         else:
@@ -56,16 +54,21 @@ def wakeword_listener():
 '''
 
 
-def weebo(query_data, whisper=False):
+def weebo(query_data, api, whisper=False):
     print("*** WEEBO *** Received query: {}".format(query_data))
 
     first_time = time()
-    # weebo_lights.green_light(True)
-    # weebo_lights.blue_light(True)
+    weebo_lights = WeeboLights()
 
-    subprocess.Popen(["aplay", "audio/weebo/beep8.wav"])
+    weebo_lights.green_light(True)
+    weebo_lights.blue_light(True)
+
+    subprocess.Popen(["aplay", "app/audio/weebo/beep8.wav"])
+    weebo_lights.red_light(True)
+    # weebo_lights.red_light(0.25, 10)
     # weebo_lights.light_thread("red", 0.25, 10)
-    query(query_data, whisper)
+    print("Query sent")
+    query(query_data, api, whisper)
     output(tmp_speech_file)
     print("*** WEEBO *** Time taken: " + str(time() - first_time) + "s")
 

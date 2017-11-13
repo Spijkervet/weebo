@@ -38,13 +38,12 @@ def amazon_aws_request(text):
                 with open(tmp_speech_file, "wb") as file:
                     file.write(stream.read())
             except IOError as error:
-                print(error)
+                # print(error)
                 pass
     return tmp_speech_file
 
 def synthesize(text, whisper):
     if text:
-        print(text)
         try:
             if(speech_service == "google"):
                 tts = gTTS(text=text, lang=global_lang, slow=False)
@@ -53,12 +52,9 @@ def synthesize(text, whisper):
             elif(speech_service == "amazon"):
                 processed_text = aws_ssml_processing(text, whisper)
                 return amazon_aws_request(processed_text)
-                # subprocess.call(["aws", "polly", "synthesize-speech", "--output-format", "mp3", "--sample-rate", str(aws_speech_sample_rate), "--voice-id", aws_voice_id, "--text-type", "ssml", "--text", text, tmp_speech_file])
-            # subprocess.call(["mpg123", tmp_speech_file])
         except Exception as e:
             print("*** EXCEPTION *** (" + str(e) + ")")
-            os.system("say I am having some trouble with my voice.")
 
 def i_am_weebo():
-    subprocess.Popen(["aplay", "audio/weebo/i_am_weebo.wav"])
+    subprocess.Popen(["aplay", "app/audio/weebo/i_am_weebo.wav"])
     sleep(1.25)

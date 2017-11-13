@@ -1,16 +1,27 @@
 from .api_ai import APIAI
+from .api_wa import APIWA
+from .api_wiki import APIWikipedia
 from .gif_bot import GiphyBot
 from .synthesizer import synthesize
-def process(data, api=True, whisper=False):
+def process(data, api, whisper=False):
 
-    if(api):
+    if(api == "API AI"):
         api_ai = APIAI()
         response = api_ai.request(data)
         print("*** API AI *** RESPONSE: " + response)
         if("picture" in response):
             make_picture()
             response = ""
-
+    elif(api == "Wolfram Alpha"):
+        wolframalpha = APIWA()
+        response = wolframalpha.request(data)
+        print("*** WOLFRAM ALPHA *** RESPONSE: " + response)
+    elif(api == "Wikipedia"):
+        wikipedia = APIWikipedia()
+        response = wikipedia.request(data)
+        print("*** WIKIPEDIA *** RESPONSE: " + response)
+    else:
+        response = "You didn't choose a brain"
     giphy = GiphyBot()
     giphy.get_giphy(data, "search")
     return synthesize(response, whisper)
