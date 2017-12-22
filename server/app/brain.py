@@ -1,7 +1,6 @@
 from .api_ai import APIAI
 from .api_wa import APIWA
 from .api_wiki import APIWikipedia
-from .gif_bot import GiphyBot
 from .synthesizer import synthesize
 
 def process(data, api, whisper=False):
@@ -22,8 +21,6 @@ def process(data, api, whisper=False):
         print("*** WIKIPEDIA *** RESPONSE: " + response)
     else:
         response = "You didn't choose a brain"
-    giphy = GiphyBot()
-    # giphy_url = giphy.get_giphy(data, "search")
     synthesized = synthesize(response, whisper)
     return synthesized
 
