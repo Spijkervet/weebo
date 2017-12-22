@@ -10,3 +10,10 @@ def query(text, api, whisper):
     if r.status_code == 200:
         with open(tmp_speech_file, 'wb') as f:
             f.write(r.content)
+
+def say(text, whisper):
+    url = "http://" + weebo_server_address + ":" + weebo_server_port + "/say?data=" + text + "&whisper=" + str(whisper)
+    r = requests.get(url)
+    if r.status_code == 200:
+        with open(tmp_speech_file, 'wb') as f:
+            f.write(r.content)

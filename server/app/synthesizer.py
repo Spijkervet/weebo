@@ -32,6 +32,10 @@ def amazon_aws_request(text):
         TextType='ssml'
     )
 
+    # url = generate_presigned_url(client, )
+
+    print(response)
+
     if("AudioStream" in response):
         with closing(response["AudioStream"]) as stream:
             try:

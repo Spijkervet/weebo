@@ -14,10 +14,16 @@ def index():
     if request.method == 'POST':
         query = request.form['query']
         api = request.form['api']
+
+        say = False
+
+        if(request.form.get("ask") is None):
+            say = True
+
         if(request.form.get("whisper")):
-            weebo(query, api, whisper=True)
+            weebo(query, api, _say=say, whisper=True)
         else:
-            weebo(query, api)
+            weebo(query, api, _say=say)
 
     form = QueryForm()
     return render_template('index.html', form=form)

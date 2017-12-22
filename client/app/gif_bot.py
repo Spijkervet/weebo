@@ -12,12 +12,14 @@ class GiphyBot():
 
     def get_giphy(self, query, endpoint, sticker=False, limit=25, rating="G"):
         query_url = self.create_query_url(self.base_url, query, endpoint, sticker, limit, rating)
-        # print(query_url)
         response = requests.get(query_url)
         data = response.json()
         num_gifs = len(data['data'])
         if(num_gifs > 0):
-            urllib.request.urlretrieve(data['data'][randint(0,num_gifs-1)]['images']['looping']['mp4'], tmp_gif_file)
+            rand_image = data['data'][randint(0,num_gifs-1)]['images']['looping']['mp4']
+            urllib.request.urlretrieve(rand_image, tmp_gif_file)
+            return True
+        return False
             #self.gif_thread = threading.Thread(target=self.play_gif)
             #self.gif_thread.daemon = False
             #self.start_thread()
@@ -40,7 +42,7 @@ class GiphyBot():
 
 
 
-    def play_gif(self):
+    def play(self):
         subprocess.call(["omxplayer", "--win", screen_window_size, tmp_gif_file])
 
     def start_thread(self):

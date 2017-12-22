@@ -4,7 +4,7 @@ import sys
 import subprocess
 from time import sleep, time
 
-from .api import query
+from .api import query, say
 from .settings import wake_words, global_lang, tmp_speech_file
 from .output import output
 from .lights import WeeboLights
@@ -54,7 +54,7 @@ def wakeword_listener():
 '''
 
 
-def weebo(query_data, api, whisper=False):
+def weebo(query_data, api, _say=False, whisper=False):
     print("*** WEEBO *** Received query: {}".format(query_data))
 
     first_time = time()
@@ -67,11 +67,19 @@ def weebo(query_data, api, whisper=False):
     weebo_lights.red_light(True)
     # weebo_lights.red_light(0.25, 10)
     # weebo_lights.light_thread("red", 0.25, 10)
-    print("Query sent")
-    query(query_data, api, whisper)
+
+    if(_say):
+        say(query_data, whisper)
+    else:
+        query(query_data, api, whisper)
     output(tmp_speech_file)
     print("*** WEEBO *** Time taken: " + str(time() - first_time) + "s")
 
+    from .gif_bot import GiphyBot
+
+    giphy = GiphyBot()
+    if giphy.get_giphy(query_data, "search"):
+        giphy.play()
 
 def clean_gpio():
     weebo_lights.clean_GPIO()

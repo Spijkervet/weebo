@@ -3,8 +3,8 @@ from .api_wa import APIWA
 from .api_wiki import APIWikipedia
 from .gif_bot import GiphyBot
 from .synthesizer import synthesize
-def process(data, api, whisper=False):
 
+def process(data, api, whisper=False):
     if(api == "API AI"):
         api_ai = APIAI()
         response = api_ai.request(data)
@@ -23,8 +23,13 @@ def process(data, api, whisper=False):
     else:
         response = "You didn't choose a brain"
     giphy = GiphyBot()
-    giphy.get_giphy(data, "search")
-    return synthesize(response, whisper)
+    # giphy_url = giphy.get_giphy(data, "search")
+    synthesized = synthesize(response, whisper)
+    return synthesized
+
+def say(data, whisper=False):
+    synthesized = synthesize(data, whisper)
+    return synthesized
 
 def emotion(data):
     keywords = ['do you feel']

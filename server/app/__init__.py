@@ -32,6 +32,16 @@ def query():
         return send_file(filename, mimetype='audio/mpeg')
     return "", 401;
 
+@app.route("/say/", methods=['GET'])
+def say():
+    if(request.args.get('data')):
+        if(request.args.get('whisper') == "True"):
+            filename = brain.say(request.args.get('data'), whisper=True)
+        else:
+            filename = brain.say(request.args.get('data'))
+        return send_file(filename, mimetype='audio/mpeg')
+    return "", 401;
+
 '''
 @app.route("/alarms/", methods=['GET', 'POST'])
 def alarms():
