@@ -61,6 +61,5 @@ target/
 *.sh
 *.mov
 *.mp4
-*.wav
 
 weebo-client/
