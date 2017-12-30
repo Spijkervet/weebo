@@ -1,7 +1,7 @@
 import requests
 from urllib import request
-
 from . settings import tmp_speech_file, weebo_server_address, weebo_server_port
+
 
 def query(text, api, whisper):
     url = "http://" + weebo_server_address + ":" + weebo_server_port + "/query?data=" + text + "&api=" + api + "&whisper=" + str(whisper)

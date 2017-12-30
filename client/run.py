@@ -1,11 +1,14 @@
-import os
-from app import create_app, clean
+import os.path
+from app import create_app, socketio
 
-app = create_app("testing")
 
-if __name__ == "__main__":
-    try:
-        app.run(host='0.0.0.0')
-    except KeyboardInterrupt:
-        print("*** INTERRUPTED ***")
-        clean()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "database.db")
+
+app = create_app(DB_PATH)
+app.host = '127.0.0.1'
+app.debug = True
+
+
+if __name__ == '__main__':
+    socketio.run(app)

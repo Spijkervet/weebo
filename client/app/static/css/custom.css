@@ -1,28 +1,120 @@
 body {
-  background-color: black !important;
-  color: white !important;
+  background-color: white;
+  height: 100%;
 }
 
+.fluid-height {
+  height: 100%;
+}
 
-.center {
+.main-content {
+  padding-top: 5rem;
+}
+
+.signin-container {
   width: 100%;
-  margin-left: auto;
-  margin-top: 20%;
-  margin-bottom: auto;
-  margin-right: auto;
-  min-height: 10em;
-  vertical-align: middle;
-  text-align: center;
+  height: 100%;
+  margin: 0 auto;
+  background-color: white;
 }
 
-h2 {
-    font-size: 3em;
+.form-signin {
+  max-width: 330px;
+  padding: 30px;
+  margin: 100 auto;
+  background-color: #f7f7f7;
 }
-h3 {
-    font-size: 1.25em;
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 2rem;
 }
 
-h1, h2, h3, h4, h5 {
-  /*font-family: 'Open Sans Condensed', sans-serif;*/
-  font-family: 'Indie Flower', cursive;
+.form-signin .checkbox {
+  font-weight: normal;
+}
+
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  margin: 10 auto;
+}
+
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: 10px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  border-right: 1px solid #eee;
+}
+
+/* Sidebar navigation */
+.sidebar {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar .nav {
+  margin-bottom: 20px;
+}
+
+.sidebar .nav-item {
+  width: 100%;
+}
+
+.sidebar .nav-item + .nav-item {
+  margin-left: 0;
+}
+
+.sidebar .nav-link {
+  border-radius: 0;
+}
+
+
+#alertMessage {
+  display: none;
+}
+
+.custom-alert-message {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.card-form {
+  padding: 30px;
+}
+
+#service-status {
+  font-size: 12;
+}
+.service-status {
+  color: #b32b2b;
+}
+.service-online {
+  color: #2ab32a;
 }

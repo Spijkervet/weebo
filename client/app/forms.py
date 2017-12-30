@@ -1,12 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, SelectField
-from wtforms.validators import DataRequired
+from wtforms.fields import StringField, BooleanField, SubmitField
+from wtforms.validators import Required
 
 
-class QueryForm(FlaskForm):
-    query = StringField('query', validators=[DataRequired()])
-    api = SelectField(
-        'api',
-        choices=[('apiai', 'API AI'), ('wolframalpha', 'Wolfram Alpha'), ('wikipedia', 'Wikipedia')]
-    )
-    whisper = BooleanField('whisper')
+class LoginForm(FlaskForm):
+    email = StringField("Name", validators=[Required()], render_kw={"type": "email", "placeholder": "Email"})
+    password = StringField("Password", validators=[Required()], render_kw={"type": "password", "placeholder": "Password"})
+    remember = BooleanField("Remember", render_kw={"class": "form-check-input"})
+    submit = SubmitField("Login")

@@ -6,7 +6,7 @@ from gtts import gTTS
 from contextlib import closing
 from time import sleep
 
-from .settings import global_lang, speech_service, aws_voice_id, aws_speech_sample_rate, tmp_speech_file, aws_key_id, aws_secret_key
+from .settings import global_lang, speech_service, aws_voice_id, aws_speech_sample_rate, tmp_speech_file
 
 def aws_ssml_processing(text, whisper):
     if(whisper):
@@ -18,18 +18,15 @@ def aws_ssml_processing(text, whisper):
 def amazon_aws_request(text):
     client = boto3.client(
         'polly',
-        region_name='eu-west-1',
-        aws_access_key_id=aws_key_id,
-        aws_secret_access_key=aws_secret_key
+        region_name='eu-west-1'
     )
-
 
     response = client.synthesize_speech(
         Text=text,
         VoiceId=aws_voice_id,
         OutputFormat="mp3",
         SampleRate=str(aws_speech_sample_rate),
-        TextType='ssml'
+        TextType="ssml"
     )
 
     if os.path.isfile(tmp_speech_file):
