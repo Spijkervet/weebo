@@ -8,3 +8,11 @@ Weebo is a project I started in the summer of 2017. I was inspired by the movie 
 - API.AI integration for natural language processing.
 - Responds with GIFs that match the answer to a given question.
 - Easily create webhooks to create custom intelligent actions.
+
+
+## Installation
+- To play most audio formats:
+    sudo apt-get install sox libsox-fmt-all
+
+- To use python Speech Recognition:
+    sudo apt-get install python3-pyaudio

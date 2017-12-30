@@ -12,7 +12,7 @@ socket.on('connect', function() {
 });
 
 socket.on('pong', function() {
-    socket.emit('ping', {data: 'Still connected'});
+    // socket.emit('ping', {data: 'Still connected'});
 });
 
 

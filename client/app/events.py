@@ -28,5 +28,10 @@ def pong(data):
 @socketio.on('consoleMessage')
 def console_message(data):
     from . import weebo
-    print(data)
-    weebo.process(data["message"], data["api"])
+    from .weebo.data import WeeboData
+
+    weebo_data = WeeboData()
+    weebo_data.query = data["message"]
+    weebo_data.api = data["api"]
+    weebo_data.say = True
+    weebo.process(weebo_data)
