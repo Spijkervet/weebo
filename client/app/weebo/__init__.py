@@ -1,5 +1,5 @@
 import requests
-from os import system
+import os
 from .output import Output
 from .settings import Settings
 
@@ -8,6 +8,7 @@ import speech_recognition as sr
 from .data import WeeboData
 
 import time
+import subprocess
 
 if Settings.rpi:
     from .lights import WeeboLights
@@ -16,13 +17,57 @@ class Weebo():
     def __init__(self):
         print("*** INIT *** WEEBO")
         self.output = Output()
+
+        if Settings.rpi:
+            self.weebo_lights = WeeboLights()
+            self.weebo_lights.startup()
+
+        if Settings.enable_idle:
+            self.idle_time = 360 # seconds
+            self.idle_task = multiprocessing.Process(target=self.idle)
+            self.idle_task.start()
+            # self.idle_task.terminate()
         # self.speech_recognition()
 
+    def reset(self):
+        self.stop()
+        if Settings.rpi:
+            if self.weebo_lights:
+                self.weebo_lights.green_light(False)
+                self.weebo_lights.blue_light(False)
+                self.weebo_lights.clean_GPIO()
+
+    def fortune_cookie(self):
+        fortune_process = subprocess.Popen(["fortune", "-s"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return fortune_process.stdout.read().decode('utf-8').strip()
+
+    def idle(self):
+        print("IDLE")
+        while(True):
+            time.sleep(self.idle_time)
+            text = self.fortune_cookie()
+            data = WeeboData()
+            data.query = text
+            data.say = True
+            self.process(data)
+        return
+
+    def stop(self):
+        #gif_bot = GiphyBot()
+        #gif_bot.stop_thread()
+        #subprocess.Popen(["afplay", "app/audio/shutdown.wav"])
+        subprocess.call(["play", "-v 2", os.path.join(Settings.base_dir, "audio/weebo/beep7.wav")], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        print("*** PROCESSED ***")
+
     def process(self, data):
-        from time import time
 
         print("*** WEEBO *** Received query: {}".format(data.query))
-        first_time = time()
+        first_time = time.time()
+
+        subprocess.call(["play", "-v 2", os.path.join(Settings.base_dir, "audio/weebo/beep0.wav")], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+        if Settings.rpi:
+            self.light_process()
 
         if(data.say):
             self.say(data.query, data.whisper)
@@ -31,9 +76,8 @@ class Weebo():
 
         self.talk_process()
 
-        if Settings.rpi:
-            self.light_process()
-        print("*** WEEBO *** Time taken: " + str(time() - first_time) + "s")
+        print("*** WEEBO *** Time taken: " + str(time.time() - first_time) + "s")
+
         '''
         from .gif_bot import GiphyBot
 
@@ -41,6 +85,7 @@ class Weebo():
         if giphy.get_giphy(query_data, "search"):
             giphy.play()
         '''
+
 
 
     def query(self, text, api, whisper):
@@ -57,6 +102,7 @@ class Weebo():
 
     def say(self, text, whisper):
         url = "http://" + Settings.weebo_server_address + ":" + Settings.weebo_server_port + "/say?data=" + text + "&whisper=" + str(whisper)
+        print(url)
         try:
             r = requests.get(url)
             if r.status_code == 200:
@@ -101,6 +147,7 @@ class Weebo():
 
     def talk(self):
         self.output.output(Settings.tmp_speech_file)
+        self.stop()
         return
 
     def talk_process(self):
@@ -109,13 +156,9 @@ class Weebo():
 
 
     def lights(self):
-        print("LIGHTS")
-        weebo_lights = WeeboLights()
-
-        weebo_lights.green_light(True)
-        weebo_lights.blue_light(True)
-        weebo_lights.red_light(0.25, 10)
-        subprocess.call(["play", "app/audio/weebo/beep8.wav"], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        self.weebo_lights.green_light(True)
+        self.weebo_lights.blue_light(True)
+        self.weebo_lights.red_light(0.25, 10)
         return
 
     def light_process(self):

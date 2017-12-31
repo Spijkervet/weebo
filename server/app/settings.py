@@ -1,6 +1,6 @@
 wake_words = ["Weebo", "wei", "weber", "we", "Weaver"]
 global_lang = "en-us"
-speech_service = "amazon" # amazon google
+speech_service = "google" # amazon google
 aws_voice_id = "Salli" #Lotte for Dutch.
 aws_speech_sample_rate = 22050
 wolfram_alpha_id = "TYX4Q4-VG8YW8YL4T"

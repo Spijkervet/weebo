@@ -1,12 +1,19 @@
 import subprocess
 import os
 from time import sleep
-
+from .settings import Settings
 # from . lights import WeeboLights
 
-base_dir = os.path.abspath(os.path.dirname(__file__))
+
 
 class Output():
+
+    def __init__(self):
+        if Settings.rpi:
+            print("Setting PCM,0 device (3mm jack) to default and volume to 100%.")
+            subprocess.call(["amixer", "cset", "numid=3 1"])
+            subprocess.call(["amixer", "sset", "PCM,0", "100%"])
+
     def output(self, file_name):
         try:
             if os.path.isfile(file_name):
@@ -21,23 +28,10 @@ class Output():
 
         if os.path.isfile(file_name):
             os.remove(file_name)
-        subprocess.call(["play", "-v 2", os.path.join(base_dir, "audio/weebo/beep7.wav")], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     def error(self):
-        subprocess.Popen(["play", os.path.join(base_dir, "audio/error.mp3")])
+        subprocess.Popen(["play", os.path.join(Settings.base_dir, "audio/error.mp3")])
 
 def i_am_weebo():
-    subprocess.Popen(["play", os.path.join(base_dir, "audio/weebo/i_am_weebo.wav")])
+    subprocess.Popen(["play", os.path.join(Settings.base_dir, "audio/weebo/i_am_weebo.wav")])
     sleep(1.25)
-
-def finalize():
-
-    #gif_bot = GiphyBot()
-    #gif_bot.stop_thread()
-    #subprocess.Popen(["afplay", "app/audio/shutdown.wav"])
-
-    # weebo_lights = WeeboLights()
-    # weebo_lights.green_light(False)
-    # weebo_lights.blue_light(False)
-    # weebo_lights.clean_GPIO()
-    print("*** PROCESSED ***")

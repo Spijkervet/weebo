@@ -49,7 +49,7 @@ def synthesize(text, whisper):
             if(speech_service == "google"):
                 tts = gTTS(text=text, lang=global_lang, slow=False)
                 tts.save(tmp_speech_file)
-                return True # TODO
+                return tmp_speech_file
             elif(speech_service == "amazon"):
                 processed_text = aws_ssml_processing(text, whisper)
                 return amazon_aws_request(processed_text)

@@ -21,9 +21,9 @@ def create_app(DB_PATH):
     from . import events
 
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + DB_PATH
+    # app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + DB_PATH
     app.config['SECRET_KEY'] = 'Aqewur381!%*'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     from .views.index import index_bp
     from .views.login import login_bp
@@ -31,7 +31,10 @@ def create_app(DB_PATH):
     app.register_blueprint(login_bp)
 
     socketio.init_app(app)
-    db.init_app(app)
-    login_manager.init_app(app)
-    bcrypt.init_app(app)
+    # db.init_app(app)
+    # login_manager.init_app(app)
+    # bcrypt.init_app(app)
     return app
+
+def reset():
+    weebo.reset()

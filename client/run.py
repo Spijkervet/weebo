@@ -1,12 +1,12 @@
 import os.path
-from app import create_app, socketio
-from celery import Celery
+from app import create_app, socketio, reset
+# from celery import Celery
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "database.db")
 
 app = create_app(DB_PATH)
-app.host = '127.0.0.1'
+app.host = "0.0.0.0"
 app.debug = True
 
 
@@ -27,4 +27,8 @@ def cef():
 if __name__ == '__main__':
     # celery = make_celery(app)
     # cef()
-    socketio.run(app)
+    try:
+        socketio.run(app, host="0.0.0.0")
+    except KeyboardInterrupt:
+        print("*** STOPPING SERVICeS ***")
+        reset()

@@ -1,9 +1,14 @@
-
+import os
 
 class Settings():
-    rpi = False
 
-    weebo_server_address = "127.0.0.1"
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+
+    rpi = True
+
+    enable_idle = False
+
+    weebo_server_address = "192.168.1.26"
     weebo_server_port = "4000"
 
     wake_words = ["Weebo", "wei", "weber", "we", "Weaver"]

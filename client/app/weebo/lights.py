@@ -17,6 +17,9 @@ class WeeboLights():
         GPIO.setup(self.green_light_gpio, GPIO.OUT)
         GPIO.setup(self.red_light_gpio, GPIO.OUT)
 
+    def startup(self):
+        self.green_light(True)
+        self.blue_light(True)
 
     def red_light(self, delay_time, iterations):
         for i in range(iterations):
