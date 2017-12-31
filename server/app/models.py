@@ -17,7 +17,7 @@ class Queries(Base):
     __tablename__ = "queries"
 
     id = db.Column(db.Integer, primary_key=True)
-    query = db.Column(db.String(512))
+    question = db.Column(db.String(512))
     response = db.Column(db.String(512))
     type = db.Column(db.Integer)
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
@@ -25,6 +25,7 @@ class Queries(Base):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
 
 class User(Base):
     __tablename__ = "users"

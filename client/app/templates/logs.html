@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Logs{% endblock %}
+{% block head %}
+<!-- HEAD css / scripts -->
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <h1>Logs</h1>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Query</th>
+                  <th scope="col">Response</th>
+                  <th scope="col">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for query in queries %}
+                <tr>
+                  <th scope="row">{{ query.id }}</th>
+                  <td>{{ query.question }}</td>
+                  <td>{{ query.response }}</td>
+                  <td>{{ query.date_created }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- BODY css / scripts -->
+{% endblock %}

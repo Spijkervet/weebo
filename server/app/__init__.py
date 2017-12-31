@@ -55,6 +55,18 @@ def say():
     return "", 401;
 
 
+@app.route("/queries/", methods=['GET'])
+def queries():
+    from .models import Queries
+    queries = Queries.query.all()
+    d = []
+    for query in queries:
+        q_dict = query.__dict__.copy()
+        del q_dict['_sa_instance_state']
+        q_dict['date_created'] = str(q_dict['date_created'])
+        d.append(q_dict)
+    return json.dumps(d)
+
 @app.route("/alarms/", methods=['GET', 'POST'])
 def alarms():
 

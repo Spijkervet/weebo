@@ -1,7 +1,8 @@
+import requests
 from flask import render_template, Blueprint
 from flask_login import login_required, current_user
 from .. import app_info
-
+from ..weebo.settings import Settings
 index_bp = Blueprint('index', __name__)
 
 
@@ -15,4 +16,5 @@ def settings():
 
 @index_bp.route('/logs', methods=['GET'])
 def logs():
-    return render_template('logs.html', app_info=app_info, user=current_user)
+    json_response = requests.get("http://" + Settings.weebo_server_address + ":" + Settings.weebo_server_port + "/queries").json()
+    return render_template('logs.html', app_info=app_info, user=current_user, queries=json_response)

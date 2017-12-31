@@ -7,7 +7,7 @@ from .synthesizer import synthesize
 def add_db_query(data, response, type=0):
     from .models import Queries
     new_query = Queries()
-    new_query.query = data
+    new_query.question = data
     new_query.response = response
     new_query.type = type
     new_query.save()
