@@ -1,43 +1,51 @@
-from app import db
-from flask_bcrypt import Bcrypt
-import jwt
+# import jwt
 from datetime import datetime, timedelta
 
-class User(db.Model):
-    """User table"""
+from flask_login import UserMixin
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from app import db, bcrypt
 
-    __tablename__ = "users"
+engine = create_engine('sqlite:///database.db', echo=True)
+db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+Base = declarative_base()
+Base.query = db_session.query_property()
+
+
+class Queries(Base):
+    __tablename__ = "queries"
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(256), nullable=False, unique=True)
-    password = db.Column(db.String(256), nullable=False)
-    '''
-    alarms = db.relationship(
-        'Alarm', order_by='Alarm.id', cascade="all, delete-orphan", backref='users'
-    )
-    '''
-
-    def __init__(self, email, password):
-        """Initialize the user with an email and a password."""
-        self.email = email
-        self.password = Bcrypt().generate_password_hash(password).decode()
-
-
-    def password_is_valid(self, password):
-        """
-        Checks the password against the hash to validates the user's password
-        """
-        return Bcrypt().check_password_hash(self.password, password)
-
+    query = db.Column(db.String(512))
+    response = db.Column(db.String(512))
+    type = db.Column(db.Integer)
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 
     def save(self):
-        """
-        Save a user to the database.
-        This includes creating a new user and editing one.
-        """
         db.session.add(self)
         db.session.commit()
 
+class User(Base):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(64), unique=True, index=True)
+    password = db.Column(db.String(128))
+    authenticated = db.Column(db.Boolean, default=False)
+
+    def __init__(self, email=None, password=None):
+        self.email = email
+        self.password = bcrypt.generate_password_hash(password)
+
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
+
+    def logout(self):
+        self.authenticated = False
+        db.session.commit()
 
     def generate_token(self, user_id):
         """Generate the API access token"""
@@ -69,6 +77,7 @@ class User(db.Model):
         except jwt.InvalidTokenError:
             return "Invalid token. Please register or login"
 
+
 class Alarm(db.Model):
     """ Alarm table """
 
@@ -90,13 +99,16 @@ class Alarm(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    @staticmethod
-    def get_all():
-        return Alarm.query.filter_by(created_by=user_id) #Alarm.query.all()
+    def is_active(self):
+        return True
 
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+    def get_id(self):
+        return self.id
 
-    def __repr__(self):
-        return "<Weebo: {}>".format(self.name)
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_anonymous(self):
+        return False
+
+Base.metadata.create_all(bind=engine)

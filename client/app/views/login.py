@@ -1,13 +1,12 @@
 from flask import render_template, redirect, request, url_for, Blueprint
 from .. import app_info, login_manager
 from ..forms import LoginForm
-from ..models import User
 from flask_login import login_user, logout_user, login_required, current_user
 
 
 login_bp = Blueprint('login', __name__)
 
-
+'''
 @login_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -42,3 +41,4 @@ def unauthorized_handler():
 @login_manager.user_loader
 def load_user(id):
     return User.query.filter(id==id).first()
+'''

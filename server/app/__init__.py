@@ -2,6 +2,8 @@ import json
 import os
 
 from flask import Flask, request, abort, send_file, make_response, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 from urllib.parse import urlparse, urlencode
 from urllib.request import urlopen, Request
@@ -12,10 +14,20 @@ from . import brain
 #from app.models import Alarm
 
 # initialize sql-alchemy
+
 app = Flask(__name__)
 
-def create_app(config_name):
+db = SQLAlchemy()
+bcrypt = Bcrypt()
 
+def create_app(DB_PATH):
+
+    from . import models
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + DB_PATH
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.init_app(app)
+    bcrypt.init_app(app)
     #from .auth import auth_blueprint
     #app.register_blueprint(auth_blueprint)
     return app
@@ -42,7 +54,7 @@ def say():
         return send_file(filename, mimetype='audio/mpeg')
     return "", 401;
 
-'''
+
 @app.route("/alarms/", methods=['GET', 'POST'])
 def alarms():
 
@@ -77,7 +89,6 @@ def alarms():
         response = jsonify(results)
         response.status_code - 200
         return response
-'''
 
 
 # webhook

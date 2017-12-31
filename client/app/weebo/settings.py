@@ -1,10 +1,18 @@
 import os
+import platform
 
 class Settings():
 
     base_dir = os.path.abspath(os.path.dirname(__file__))
 
-    rpi = True
+    # check if we have the raspberry pi packages.
+    try:
+        import RPi.GPIO
+        rpi = True
+    except ImportError as e:
+        print(e, "Setting rpi to False in weebo/settings.")
+        rpi = False
+        pass
 
     enable_idle = False
 

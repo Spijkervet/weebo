@@ -3,6 +3,15 @@ from .api_wa import APIWA
 from .api_wiki import APIWikipedia
 from .synthesizer import synthesize
 
+
+def add_db_query(data, response, type=0):
+    from .models import Queries
+    new_query = Queries()
+    new_query.query = data
+    new_query.response = response
+    new_query.type = type
+    new_query.save()
+
 def process(data, api, whisper=False):
     if(api == "API AI"):
         api_ai = APIAI()
@@ -22,10 +31,12 @@ def process(data, api, whisper=False):
     else:
         response = "You didn't choose a brain"
     synthesized = synthesize(response, whisper)
+    add_db_query(data, response)
     return synthesized
 
 def say(data, whisper=False):
     synthesized = synthesize(data, whisper)
+    add_db_query(data, data, type=1)
     return synthesized
 
 def emotion(data):
