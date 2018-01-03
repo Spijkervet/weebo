@@ -29,6 +29,24 @@ class Weebo():
             # self.idle_task.terminate()
         # self.speech_recognition()
 
+        startup_task = multiprocessing.Process(target=self.startup)
+        startup_task.start()
+
+    def play_audio(self, path=None):
+        subprocess.call(["play", "-v 1.5", os.path.join(Settings.base_dir, "audio/weebo/beep0.wav")], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+
+        if Settings.rpi:
+            self.light_process()
+
+        if path:
+            subprocess.call(["play", os.path.join(Settings.base_dir, path)], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            self.reset()
+
+
+    def startup(self):
+        print("*** STARTUP SERVICE ***")
+        self.play_audio("audio/startup.mp3")
+
     def reset(self):
         self.stop()
         if Settings.rpi:
@@ -64,10 +82,7 @@ class Weebo():
         print("*** WEEBO *** Received query: {}".format(data.query))
         first_time = time.time()
 
-        subprocess.call(["play", "-v 2", os.path.join(Settings.base_dir, "audio/weebo/beep0.wav")], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
-        if Settings.rpi:
-            self.light_process()
+        self.play_audio()
 
         if(data.say):
             self.say(data.query, data.whisper)

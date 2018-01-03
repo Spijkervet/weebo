@@ -28,7 +28,8 @@ function update(data) {
 
 $("#consoleForm").submit(function(event) {
     formData = formToJSON($(this));
+    formData.button = $(document.activeElement).attr('name');
     console.log(formData);
-    socket.emit('consoleMessage', {message: formData.query, api:formData.api});
+    socket.emit('consoleMessage', {message: formData.query, api:formData.api, button: formData.button});
     event.preventDefault();
 });

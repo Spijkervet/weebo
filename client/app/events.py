@@ -29,9 +29,9 @@ def pong(data):
 def console_message(data):
     from . import weebo
     from .weebo.data import WeeboData
-
+    print(data)
     weebo_data = WeeboData()
     weebo_data.query = data["message"]
     weebo_data.api = data["api"]
-    weebo_data.say = True
+    weebo_data.say = data["button"] == "say"
     weebo.process(weebo_data)

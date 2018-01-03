@@ -13,18 +13,18 @@ def add_db_query(data, response, type=0):
     new_query.save()
 
 def process(data, api, whisper=False):
-    if(api == "API AI"):
+    if(api == "apiai"):
         api_ai = APIAI()
         response = api_ai.request(data)
         print("*** API AI *** RESPONSE: " + response)
         if("picture" in response):
             make_picture()
             response = ""
-    elif(api == "Wolfram Alpha"):
+    elif(api == "wolfram"):
         wolframalpha = APIWA()
         response = wolframalpha.request(data)
         print("*** WOLFRAM ALPHA *** RESPONSE: " + response)
-    elif(api == "Wikipedia"):
+    elif(api == "wiki"):
         wikipedia = APIWikipedia()
         response = wikipedia.request(data)
         print("*** WIKIPEDIA *** RESPONSE: " + response)

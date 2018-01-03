@@ -1,3 +1,5 @@
+import os
+
 wake_words = ["Weebo", "wei", "weber", "we", "Weaver"]
 global_lang = "en-us"
 speech_service = "google" # amazon google
@@ -8,6 +10,11 @@ tmp_speech_file = "/var/tmp/tmp_speech.mp3"
 
 
 def get_ai_token():
+    try:
+        return os.environ['api_ai_access_token']
+    except:
+        print("*** ERROR *** You do not have an api_ai_access_token")
+        pass
     return ""
 
 api_ai_access_token = get_ai_token()

@@ -19,17 +19,17 @@
 
                     <label for="api">Brain:</label>
                     <select class="form-control" id="api" name="api">
-                        <option>API AI</option>
-                        <option>Wolfram Alpha</option>
-                        <option>Wikipedia</option>
+                        <option value="apiai">API AI</option>
+                        <option value="wolfram">Wolfram Alpha</option>
+                        <option value="wiki">Wikipedia</option>
                     </select>
 
                     <label class="form-check-label">
                         <input class="form-check-input" type="checkbox" id="whisper" name="whisper"> Whisper
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary" name="ask">Ask</button>
-                <button type="submit" class="btn btn-primary" name="say">Say</button>
+                <button id="ask" type="submit" class="btn btn-primary" name="ask">Ask</button>
+                <button id="say" type="submit" class="btn btn-primary" name="say">Say</button>
             </form>
         </div>
     </div>
