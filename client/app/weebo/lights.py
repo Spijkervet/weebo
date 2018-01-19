@@ -21,12 +21,15 @@ class WeeboLights():
         self.green_light(True)
         self.blue_light(True)
 
-    def red_light(self, delay_time, iterations):
-        for i in range(iterations):
+    def red_light(self, delay_time=0.25, iterations=5, always_on=False):
+        if always_on:
             GPIO.output(self.red_light_gpio, GPIO.HIGH)
-            sleep(delay_time)
-            GPIO.output(self.red_light_gpio, GPIO.LOW)
-            sleep(delay_time)
+        else:
+            for i in range(iterations):
+                GPIO.output(self.red_light_gpio, GPIO.HIGH)
+                sleep(delay_time)
+                GPIO.output(self.red_light_gpio, GPIO.LOW)
+                sleep(delay_time)
 
     def green_light(self, turn_on):
         if(turn_on):

@@ -52,8 +52,9 @@ class Weebo():
         if Settings.rpi:
             if self.weebo_lights:
                 self.weebo_lights.green_light(False)
-                self.weebo_lights.blue_light(False)
-                self.weebo_lights.clean_GPIO()
+                self.weebo_lights.red_light(always_on=True)
+                # self.weebo_lights.blue_light(False)
+                # self.weebo_lights.clean_GPIO()
 
     def fortune_cookie(self):
         fortune_process = subprocess.Popen(["fortune", "-s"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -92,6 +93,7 @@ class Weebo():
         self.talk_process()
 
         print("*** WEEBO *** Time taken: " + str(time.time() - first_time) + "s")
+
 
         '''
         from .gif_bot import GiphyBot
@@ -162,7 +164,7 @@ class Weebo():
 
     def talk(self):
         self.output.output(Settings.tmp_speech_file)
-        self.stop()
+        self.reset()
         return
 
     def talk_process(self):

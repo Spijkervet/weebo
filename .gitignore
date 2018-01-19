@@ -63,3 +63,5 @@ target/
 *.mp4
 
 weebo-client/
+
+*.db

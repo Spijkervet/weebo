@@ -11,6 +11,7 @@ from urllib.error import HTTPError
 
 from . import brain
 
+
 #from app.models import Alarm
 
 # initialize sql-alchemy
@@ -35,11 +36,18 @@ def create_app(DB_PATH):
 
 @app.route("/query/", methods=['GET'])
 def query():
+
+
+
     print("API: " + request.args.get('api'))
     if(request.args.get('data')):
         if(request.args.get('whisper') == "True"):
+            #task = multiprocessing.Process(target=brain.process, args=(request.args.get('data'), request.args.get('api')))
+            #task.start()
             filename = brain.process(request.args.get('data'), api=request.args.get('api'), whisper=True)
         else:
+            # task = multiprocessing.Process(target=brain.process, args=(request.args.get('data'), request.args.get('api')))
+            #task.start()
             filename = brain.process(request.args.get('data'), api=request.args.get('api'))
         return send_file(filename, mimetype='audio/mpeg')
     return "", 401;
@@ -104,62 +112,44 @@ def alarms():
 
 
 # webhook
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
+
     req = request.get_json(silent=True, force=True)
-    res = process_request(req)
+    print("RECeEEEIVVEED ", req)
+    print(json.dumps(req, indent=4))
+    res = processRequest(req)
     res = json.dumps(res, indent=4)
-    # print(res)
-    r = make_response(jsonify(res))
+    r = make_response(res)
     r.headers['Content-Type'] = 'application/json'
     return r
 
 
-def process_request(req):
-    if req.get("result").get("action") == "yahooWeatherForecast":
-        baseurl = "https://query.yahooapis.com/v1/public/yql?"
-        yql_query = make_yql_query(req)
-        if yql_query is None:
-            return {}
-        yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-        result = urlopen(yql_url).read().decode('utf-8')
-        data = json.loads(result)
-        # print(data)
-        res = make_webhook_result(data)
-        return res
-    elif(req.get("result").get("action") == "playMusic"):
-        # print("*** MUSIC ***")
-        baseurl = "https://query.yahooapis.com/v1/public/yql?"
-        spotify_query = make_spotify_query(req)
-        if spotify_query is None:
-            return {}
-        spotify_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
-        result = urlopen(yql_url).read().decode('utf-8')
-        data = json.loads(result)
-        # print(data)
-        res = make_webhook_result(data)
-        return res
-
-    return {}
-
-def make_spotify_query(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
+def processRequest(req):
+    if req.get("result").get("action") != "yahooWeatherForecast":
+        return {}
+    baseurl = "https://query.yahooapis.com/v1/public/yql?"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult(data)
+    return res
 
 
-
-def make_yql_query(req):
+def makeYqlQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
     if city is None:
         return None
 
-    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "')"
+    return "select * from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + city + "') and u='c'"
 
 
-def make_webhook_result(data):
+def makeWebhookResult(data):
     query = data.get('query')
     if query is None:
         return {}
@@ -182,12 +172,8 @@ def make_webhook_result(data):
     if condition is None:
         return {}
 
-    # print(json.dumps(item, indent=4))
-    #+ units.get('temperature')
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + condition.get('temp') + " degrees Celsius"
-
-    # print(speech)
+    speech = "Today the weather in " + location.get('city') + ": " + condition.get('text') + \
+             ", And the temperature is " + condition.get('temp') + " " + units.get('temperature')
 
     return {
         "speech": speech,
