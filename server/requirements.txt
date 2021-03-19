@@ -50,7 +50,7 @@ inflect==0.2.5
 iso8601==0.1.11
 itsdangerous==0.24
 jaraco.itertools==2.1
-Jinja2==2.10
+Jinja2==2.11.3
 jmespath==0.9.3
 jsbeautifier==1.6.4
 kaitaistruct==0.7
