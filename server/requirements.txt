@@ -69,7 +69,7 @@ olefile==0.44
 paramiko==2.0.0
 passlib==1.7.1
 pathtools==0.1.2
-Pillow==4.3.0
+Pillow==9.0.0
 pluginbase==0.5
 promise==1.0.1
 psycopg2==2.7.3
