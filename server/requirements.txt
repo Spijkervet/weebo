@@ -66,7 +66,7 @@ more-itertools==4.0.1
 msgpack-python==0.4.8
 numpy==1.13.3
 olefile==0.44
-paramiko==2.0.0
+paramiko==2.10.1
 passlib==1.7.1
 pathtools==0.1.2
 Pillow==4.3.0
